@@ -187,3 +187,251 @@ console.log(contador.add());
 console.log(contador.reset());
 console.log(contador.add());
  
+
+//Array
+
+//Filter
+var carros = [];
+carros[0] = {marca: "Ford", modelo:"Ka"};
+carros[1] = {marca: "Volkswagen", modelo:"Gol"};
+carros[2] = {marca: "Chevrolet", modelo:"Corsa"};
+
+var carrosVolksvagen = carros.filter(function(elemento){
+	return elemento.marca === "Volkswagen";
+});
+
+console.log(carrosVolksvagen);
+
+//Every - se todos os elementos satisfazem a condição
+var todos = carros.every(function (elemento){
+	return elemento.marca === "Ford"; //Retorna true ou false
+});
+
+console.log("Every: " + todos);
+
+//Some - se algum elemento satisfaz a condição
+var algum = carros.some(function(elemento){
+	return elemento.marca === "Chevrolet"; //Retorna true ou false
+});
+
+console.log("Some: " + algum);
+
+
+//Map - deriva um novo array 
+var modelos = carros.map(function(elemento){
+	return elemento.modelo;
+})
+
+console.log("Modelos: " + modelos);
+
+
+//Reduce - permite processar os itens do array sem alterar o array
+
+var produtos = [];
+
+produtos[0] = {nome:"Celular", preco: 1500};
+produtos[1] = {nome:"Computador", preco: 3500};
+produtos[2] = {nome:"Notebook", preco: 2000};
+
+var valorTotal;
+
+valorTotal = produtos.reduce(function(elementoAnterior , elementoAtual){
+	return elementoAnterior + elementoAtual.preco;
+}, 0); //valor inicial, é o elementoAnterior na primeira interação do laço, se não houvesse seria undefined
+
+console.log(produtos);
+console.log("Valor total dos produtos: " + valorTotal);
+
+
+//Concat - concatena dois arrays em um NOVO ARRAY
+
+var timesGauchos = ["Grêmio","Inter"];
+var timesPaulistas = ["Corinthians","São Paulo"];
+
+var brasileirao = timesGauchos.concat(timesPaulistas);
+
+console.log("Brasileirão: " + brasileirao);
+
+
+//Slice - fatia o array em uma posição inicial até uma posição final -1
+//Não altera o array original
+
+console.log("Slice (0,2): " + brasileirao.slice(0,2));
+console.log("Slice (1,3): " + brasileirao.slice(1,3));
+console.log("Slice (2): " + brasileirao.slice(2)); //até a ultima não precisa a posição final
+
+
+//Reverse - inverte a ordem dos elementos
+//Altera o array original
+
+console.log("Reverse: " + brasileirao.reverse());
+
+
+//Sort - ordenando os elementos, ordem alfabética por padrão
+
+console.log("Sort (default): " + brasileirao.sort());
+
+produtos.sort(function(a,b){ 
+	return a.preco - b.preco; 
+});
+//retorna um numero negativo, zero ou positivo
+//se for negativo: a fica ordenado em primeiro e b em segundo
+//se for zero: fica inalterado
+//se for positivo: b fica em primeiro e a fica em segundo
+
+//Como funciona:
+// Array produtos
+// Celular - 1500
+// Computador - 3500
+// Notebook - 2000
+// 1ª comparação -> Celular x Computador
+// Celular fica na frente
+// 2ª comparação -> Computador x Notebook
+// Notebook fica na frente
+// 3ª comparação -> Celular x Notebook (Outra volta no array)
+// Celular fica na frente
+// Repete até nenhum elemento se movimentar mais
+
+console.log(produtos);
+
+
+//Join - junta os elementos de um array separada por um elemento definido por parâmetro
+//Retorna uma string
+
+console.log("Join: " + brasileirao.join(" -> "));
+
+
+
+//Expressões Regulares
+
+//Criando usando duas barras / <regexp> /
+var regExp = /abc/;
+console.log("RegExp: " + regExp);
+
+//Criando usando new RegExp();
+var regExp = new RegExp("abc");
+console.log("RegExp: " + regExp);
+
+
+//Reconhecendo numero de telefone
+
+var regExp = /9999-9999/;
+var telefone = "9999-9999";
+
+console.log("Reconhecendo um numeor de telefone");
+//Exec - retorna index e o input
+console.log("Exec: " + regExp.exec(telefone));
+
+//Test - retorna true ou false
+console.log("Test: " + regExp.test(telefone));
+
+
+//Telefone com codigo de area
+// \ -> escapar de caracteres especiais
+
+var regExp = /\(48\) 9999-9999/;
+var telefone = "(48) 9999-9999";
+console.log("Escape de caracteres especiais");
+console.log("Exec: " + regExp.exec(telefone));
+console.log("Test: " + regExp.test(telefone));
+
+
+// ^ -> inicia com determinado caractere
+// $ -> termina com determinado caractere
+
+var regExp = /^\(48\) 9999-9999$/;
+var telefoneCorreto = "(48) 9999-9999";
+var telefoneIncorreto = "48 9999-9999 meu telefone";
+console.log("Inicio e fim");
+console.log("Exec: " + regExp.exec(telefoneCorreto));
+console.log("Exec: " + regExp.exec(telefoneIncorreto));
+console.log("Test: " + regExp.test(telefoneCorreto));
+console.log("Test: " + regExp.test(telefoneIncorreto));
+
+
+//Flexibilizando a regexp
+//Grupos de caracteres
+// ^ dentro de um grupo vale como negação
+// "-" - traço é um range
+var regExp = /^\([0-9][0-9]\) [0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$/;
+var telefone1 = "(51) 8565-4494";
+var telefone2 = "(51) 1234-4165";
+
+console.log("Grupos de caracteres");
+console.log("Exec: " + regExp.exec(telefone1));
+console.log("Test: " + regExp.test(telefone1));
+console.log("Exec: " + regExp.exec(telefone2));
+console.log("Test: " + regExp.test(telefone2));
+
+
+//Quantificadores
+//{n} - um numero específico
+//{n,} - um número mínimo
+//{n,m} - um numero mínimo e máximo
+//? - zero ou um
+//* - zero ou mais
+//+ - um ou mais
+
+var regExp = /^\([0-9]{2}\) [0-9]{4,5}-?[0-9]{4}$/; //aceitando 9 dígitos com hífen opcional
+var telefone1 = "(51) 98565-4494";
+var telefone2 = "(51) 12344165";
+
+console.log("Quantificadores");
+console.log("Exec: " + regExp.exec(telefone1));
+console.log("Test: " + regExp.test(telefone1));
+console.log("Exec: " + regExp.exec(telefone2));
+console.log("Test: " + regExp.test(telefone2));
+
+
+//Telefones em uma estrutura de tabela
+var regExp = /<table><tr>(<td>\([0-9]{2}\) [0-9]{4,5}-?[0-9]{4}<\/td>)+<\/tr><\/table>/;
+
+var telefoneTable = "<table><tr><td>(51) 98745981</td><td>(51) 8565-4494</td><td>(55) 4587-6984</td></tr></table>"
+console.log("Telefone em uma tabela");
+console.log("Exec: " + regExp.exec(telefoneTable));
+console.log("Test: " + regExp.test(telefoneTable));
+
+
+
+//Metacaracteres
+// . - qualquer caractere
+// \w - conjunto [a-zA-Z0-9_]
+// \W - conjunto [^a-zA-Z0-9_] 
+// \d - conjunto [0-9]
+// \D - conjunto [^0-9]
+// \s - espaço em branco
+// \s - não espaço em branco
+// \n - qubra de linha
+// \t - tab
+
+var regExp = /<table><tr>(<td>\(\d{2}\)\s\d{4,5}-?\d{4}<\/td>)+<\/tr><\/table>/;
+
+var telefoneTable = "<table><tr><td>(51) 98745981</td><td>(51) 8565-4494</td><td>(55) 4587-6984</td></tr></table>"
+console.log("Metacaracteres");
+console.log("Exec: " + regExp.exec(telefoneTable));
+console.log("Test: " + regExp.test(telefoneTable));
+
+
+//Extraindo o telefone das linhas
+
+//Modificadores
+// i - case insensitive
+// g - global matching
+// m - multiline matching
+
+var regExp = /\(\d{2}\)\s\d{4,5}-?\d{4}/g; //g no final da regExp, new RegExp("abc",g);
+
+var telefoneTable = "<table><tr><td>(51) 98745981</td><td>(51) 8565-4494</td><td>(55) 4587-6984</td></tr></table>"
+
+console.log("Extraindo os telefones");
+console.log(telefoneTable.match(regExp)); //match -> função da String
+
+
+//Substituindo todos os telefones
+var regExp = /\(\d{2}\)\s\d{4,5}-?\d{4}/g; 
+
+var telefoneTable = "<table><tr><td>(51) 98745981</td><td>(51) 8565-4494</td><td>(55) 4587-6984</td></tr></table>"
+
+console.log("Substituindo os telefones");
+console.log(telefoneTable.replace(regExp, "telefone")); //replace -> função da String
+
