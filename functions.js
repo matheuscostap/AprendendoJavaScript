@@ -435,3 +435,22 @@ var telefoneTable = "<table><tr><td>(51) 98745981</td><td>(51) 8565-4494</td><td
 console.log("Substituindo os telefones");
 console.log(telefoneTable.replace(regExp, "telefone")); //replace -> função da String
 
+
+
+//Date
+var hoje = new Date(); //pega a data do interpretador
+console.log(hoje);
+console.log(typeof hoje);
+
+var natal = new Date(1419465600000); //passando ms como parâmetro
+console.log(natal);
+
+Date.parse("2017/10/13"); //pega os ms de uma data
+
+var aniversario = new Date("1999/01/04"); //passando string
+console.log(aniversario);
+
+new Date("2017-10-13T10:00:00-02:00"); //data formato ISO 8601 descontando o offset
+
+new Date(2017,11,10,08,13,00); //passando a própia data, mês começa em 0
+
