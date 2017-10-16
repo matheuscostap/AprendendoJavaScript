@@ -454,3 +454,121 @@ new Date("2017-10-13T10:00:00-02:00"); //data formato ISO 8601 descontando o off
 
 new Date(2017,11,10,08,13,00); //passando a própia data, mês começa em 0
 
+
+//Statement
+var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent rhoncus venenatis maximus. Sed bibendum eu leo eleifend sodales. Phasellus pellentesque, massa eu posuere imperdiet, neque nibh pellentesque diam, gravida feugiat leo justo pulvinar nisl. Quisque venenatis risus sapien, a vehicula lorem dignissim a."
+
+var HackerTextError = function(message){
+	this.message = message;
+	this.name = "HackerTextError";
+}
+
+var toHackerCase = function(text){
+	if(!text) throw new HackerTextError("Invalid text!");
+	if(typeof text != "string") throw new HackerTextError("Invalid type!");
+
+	var hackerTextArray = [];
+	var i = 0;
+	while(i < text.length){
+		switch(text.charAt(i)){
+			case "o": hackerTextArray.push(0); break;
+			case "l": hackerTextArray.push(1); break;
+			case "e": hackerTextArray.push(3); break;
+			case "a": hackerTextArray.push(4); break;
+			case "s": hackerTextArray.push(5); break;
+			case "t": hackerTextArray.push(7); break;
+			default: hackerTextArray.push(text.charAt(i));
+		}
+		i++;
+	}
+
+	return hackerTextArray.join("");
+}
+
+try{
+	console.log(toHackerCase());
+}catch(e){
+	console.log("Error: " + e.message + " " + e.name);
+}
+
+try{
+	console.log(toHackerCase(10));
+}catch(e){
+	console.log("Error: " + e.message + " " + e.name);
+}
+
+console.log(toHackerCase(text));
+
+
+//Herança
+
+var homem = {
+	sexo: "masculino"
+}
+
+var joao = {
+	nome: "João",
+	idade: 20,
+	__proto__: homem //propriedade proto pode não funcionar em alguns interpretadores
+}
+
+var pedro = {
+	nome: "Pedro",
+	idade: 18,
+}
+Object.setPrototypeOf(pedro,homem); 
+
+var matheus = Object.create(homem);
+matheus.nome = "Matheus";
+matheus.idade = 18;
+
+
+console.log(joao);
+console.log(joao.sexo);
+console.log(pedro);
+console.log(pedro.sexo);
+console.log(matheus);
+console.log(matheus.sexo);
+
+//Shadowing
+//Busca de uma propriedade consultando cada protótipo da cadeia de protótipos
+//Se a propriedade tiver o mesmo nome em dois protótipos em uma cadeia, será retornado o primeiro 
+
+console.log(Object.keys(joao)); //Retorna apenas as propriedades que existem em joao
+
+for (var property in joao) {
+	console.log(property); //o for in verifica em todos os níveis
+}
+
+//[[Prototype]] x prototype 
+//[[Prototype]] - (conceito) prototipo um objeto que pode ser outro objeto ou null
+//prototype - (propriedade) só existe em funções
+
+var Homem = function(nome, idade){
+	this.nome = nome;
+	this.idade = idade;
+}
+
+Homem.prototype.sexo = "masculino"; 
+
+var cleston = new Homem("Cléston", 20); //Cléston vai ter a propriedade sexo porque o "new" injetou o prototipo de Homem no prototipo de Cléston mas Esdras não terá
+console.log(cleston);
+console.log(cleston.sexo);
+
+var esdras = {};
+esdras.__proto__ = Homem.prototype; //É isso que ocorre quando se usa o "new", insere na propriedade __proto__ (ou similar) do objeto a propriedade prototype da função contrutora
+Homem.call(esdras,"Esdras",40);
+console.log(esdras);
+console.log(esdras.sexo);
+
+//A PROPRIEDADE NÃO SERÁ DO OBJETO! SERA DO SEU PROTOTIPO!´SÓ SERA REFERENCIADO.
+
+var _new = function(f){ 
+	var obj = {};
+	obj.__proto__= f.prototype;
+	f.apply(obj,Array.prototype.slice.call(arguments,1));
+	return obj;
+}
+
+var andre = _new(Homem, "André",49);
+console.log(andre);
